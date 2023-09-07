@@ -56,10 +56,10 @@ function App() {
 
         <Route path='/' element={<Home/>}></Route>
         <Route path='/About' element={<About/>}></Route>
-        <Route path='/Login' element={<Login/>}></Route>
-        <Route path='/Register' element={<Register/>}></Route>
-        <Route path='/post/creat' element={<CreatPost></CreatPost>}></Route>
-        <Route path='/dashboard' element={<Dashboard></Dashboard>}></Route>
+        <Route path='/Login' element={!user ? <Login/> : <Navigate to="/Login"/>}></Route>
+        <Route path='/Register' element={!user ? <Register/> : <Navigate to="/"/>}></Route>
+        <Route path='/post/creat' element={user ? <CreatPost></CreatPost> : <Navigate to="/"></Navigate>}></Route>
+        <Route path='/dashboard' element={user ? <Dashboard></Dashboard> : <Navigate to="/"></Navigate>}></Route>
         </Routes>
       </div>
       <Footer/>

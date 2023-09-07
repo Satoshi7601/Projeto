@@ -6,7 +6,7 @@ import{
     createUserWithEmailAndPassword,
     signInWithEmailAndPassword,
     updateProfile,
-    sigOut
+    signOut
 } from 'firebase/auth';
 
 
@@ -82,6 +82,55 @@ export const useAuthentication  = () =>{
         }
 
         
+    };
+   
+    //funçao que faz a saidada do usuario do login
+     
+    
+    const logout= () =>{
+
+        checkIfIsCancelled()
+
+        signOut(auth)
+
+    } 
+
+    //faz o login do usuario    
+    const  login =async(data) =>{
+        
+        checkIfIsCancelled()
+
+        setLoading(true)
+        setError(false)
+        
+        try {
+
+            await signInWithEmailAndPassword(auth, data.email, data.password)//faz a pasagem dos dados
+            setLoading(false)
+
+        } catch (error) {
+         
+            let systemErrorMessage;
+           
+          
+            if(error.message.includes("user-not-found")){//verifica se o usuario existe
+
+                systemErrorMessage = "Usuario não encotrado"
+
+                }else if(error.message.includes("wrong-password")){
+
+                    systemErrorMessage =" Senha incorreta ";
+                }else {
+
+                    systemErrorMessage ="Erro por favor tente mais tarde";
+
+                }
+            
+            setError(systemErrorMessage)
+            setLoading(false)
+        
+        }
+
     }
 
     useEffect(()=>{ //coloca o cancelado como true assim que sair da pagina
@@ -95,7 +144,9 @@ export const useAuthentication  = () =>{
         auth,
         createUser, 
         error, 
-        loading
+        loading,
+        logout,
+        login
     };
 
 };
